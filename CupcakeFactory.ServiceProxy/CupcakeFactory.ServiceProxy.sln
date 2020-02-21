@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CupcakeFactory.ServiceProxy", "CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.ServiceProxy.csproj", "{B851F879-1554-47AC-82AB-68B5A119991C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CupcakeFactory.ServiceProxy.Tests", "CupcakeFactory.ServiceProxy.Tests\CupcakeFactory.ServiceProxy.Tests.csproj", "{A7D53430-AA1E-4EFF-A3CB-8D752362527E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeFactory.ServiceProxy.Benchmarks", "CupcakeFactory.ServiceProxy.Benchmarks\CupcakeFactory.ServiceProxy.Benchmarks.csproj", "{39355E02-D654-44B8-971D-A54892588655}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CupcakeFactory.ServiceProxy.Benchmarks", "CupcakeFactory.ServiceProxy.Benchmarks\CupcakeFactory.ServiceProxy.Benchmarks.csproj", "{39355E02-D654-44B8-971D-A54892588655}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CupcakeFactory.ServiceProxy", "CupcakeFactory.ServiceProxy\CupcakeFactory.ServiceProxy.csproj", "{3C156F03-8907-4A7D-8A87-B49251534AF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B851F879-1554-47AC-82AB-68B5A119991C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B851F879-1554-47AC-82AB-68B5A119991C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B851F879-1554-47AC-82AB-68B5A119991C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B851F879-1554-47AC-82AB-68B5A119991C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7D53430-AA1E-4EFF-A3CB-8D752362527E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A7D53430-AA1E-4EFF-A3CB-8D752362527E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7D53430-AA1E-4EFF-A3CB-8D752362527E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{39355E02-D654-44B8-971D-A54892588655}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39355E02-D654-44B8-971D-A54892588655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39355E02-D654-44B8-971D-A54892588655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
