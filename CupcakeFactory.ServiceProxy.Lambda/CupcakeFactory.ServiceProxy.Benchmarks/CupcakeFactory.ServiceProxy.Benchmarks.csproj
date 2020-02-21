@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.csproj" />
+    <ProjectReference Include="..\CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.ServiceProxy.csproj" />
     <ProjectReference Include="..\CupcakeFactory.ServiceProxy.Tests\CupcakeFactory.ServiceProxy.Tests.csproj" />
   </ItemGroup>
 
