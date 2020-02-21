@@ -10,22 +10,21 @@ namespace CupcakeFactory.ServiceProxy.Serializers
 {
     public interface IRequestSerializer
     {
-        string SerializeRequest<TService>(Request request);
+        byte[] SerializeRequest<TService>(Request request);
 
-        Request DeserializeRequest<TService>(string serializedRequest);
+        Request DeserializeRequest<TService>(byte[] serializedRequest);
 
-        string SerializeRequest<TService>(MethodInfo method, object[] args);
+        byte[] SerializeRequest<TService>(MethodInfo method, object[] args);
     }
 
     public interface IResponseSerializer
     {
-        string SerializeResponse(Response response);
+        byte[] SerializeResponse(Response response);
 
-        object DeserializeResponse(MethodInfo method, string serializedResponse);
-        TReturn DeserializeResponse<TReturn>(MethodInfo method, string serializedResponse);
+        TReturn DeserializeResponse<TReturn>(MethodInfo method, byte[] serializedResponse);
     }
 
-    public interface ISerializer
+    public interface IProxySerializer
     {
         IRequestSerializer RequestSerializer { get; }
 

@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace CupcakeFactory.ServiceProxy.Serializers
 {
@@ -19,9 +20,11 @@ namespace CupcakeFactory.ServiceProxy.Serializers
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="serializedRequest">The serialized request.</param>
         /// <returns></returns>
-        public Request DeserializeRequest<TService>(string serializedRequest)
+        public Request DeserializeRequest<TService>(byte[] serializedRequest)
         {
-            JObject message = JObject.Parse(serializedRequest);
+            var stringMessage = Encoding.UTF8.GetString(serializedRequest);
+
+            JObject message = JObject.Parse(stringMessage);
             var properties = message.Properties();
             var key = message.Properties().FirstOrDefault().Name;
 
@@ -42,7 +45,7 @@ namespace CupcakeFactory.ServiceProxy.Serializers
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        public string SerializeRequest<TService>(Request request)
+        public byte[] SerializeRequest<TService>(Request request)
         {
             var methodKey = ContractParser<TService>.GetMethodKey(request.Method);
 
@@ -53,22 +56,23 @@ namespace CupcakeFactory.ServiceProxy.Serializers
                 message[methodKey][i.ToString()] = JToken.FromObject(request.Args[i]);
             }
 
-            return message.ToString();
+            return Encoding.UTF8.GetBytes(message.ToString());
         }
 
-        public string SerializeRequest<TService>(MethodInfo method, object[] args) => SerializeRequest<TService>(new Request(method, args));
+        public byte[] SerializeRequest<TService>(MethodInfo method, object[] args) => SerializeRequest<TService>(new Request(method, args));
     }
 
     public class JsonResponseSerializer : IResponseSerializer
     {
-        public object DeserializeResponse(Type returnType, string serializedObject)
+        public TReturn DeserializeResponse<TReturn>(MethodInfo methodInfo, byte[] serializedResponse)
         {
-            JObject obj = JObject.Parse(serializedObject);
+            var stringMessage = Encoding.UTF8.GetString(serializedResponse);
+            JObject obj = JObject.Parse(stringMessage);
 
             if (obj["s"].Value<bool>())
             {
                 var responseJson = obj["r"].ToString();
-                return JsonConvert.DeserializeObject(responseJson, returnType);
+                return JsonConvert.DeserializeObject<TReturn>(responseJson);
             }
             else
             {
@@ -84,30 +88,21 @@ namespace CupcakeFactory.ServiceProxy.Serializers
             }
         }
 
-        public object DeserializeResponse(MethodInfo methodInfo, string serializedObject)
+        public byte[] SerializeResponse(Response response)
         {
-            return DeserializeResponse(methodInfo.ReturnType, serializedObject);
-        }
-
-        public TReturn DeserializeResponse<TReturn>(MethodInfo methodInfo, string serializedResponse)
-        {
-            return (TReturn)DeserializeResponse(typeof(TReturn), serializedResponse);
-        }
-
-        public string SerializeResponse(Response response)
-        {
-            return JsonConvert.SerializeObject(response);
+            var message = JsonConvert.SerializeObject(response);
+            return Encoding.UTF8.GetBytes(message.ToString());
         }
     }
 
-    public class JsonSerializer<TContract> : ISerializer
+    public class JsonProxySerializer<TContract> : IProxySerializer
     {
         IRequestSerializer _requestSerializer = new JsonRequestSerializer();
 
         IResponseSerializer _responseSerializer = new JsonResponseSerializer();
         
-        IRequestSerializer ISerializer.RequestSerializer => _requestSerializer;
+        IRequestSerializer IProxySerializer.RequestSerializer => _requestSerializer;
         
-        IResponseSerializer ISerializer.ResponseSerializer => _responseSerializer;
+        IResponseSerializer IProxySerializer.ResponseSerializer => _responseSerializer;
     }
 }

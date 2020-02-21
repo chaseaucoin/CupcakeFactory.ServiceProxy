@@ -10,15 +10,15 @@ namespace CupcakeFactory.ServiceProxy.Invokers
 {
     public class Invoker<TContract>
     {
-        ISerializer _serializer;
+        IProxySerializer _serializer;
         TContract _instance;
-        public Invoker(ISerializer serializer, TContract instance)
+        public Invoker(IProxySerializer serializer, TContract instance)
         {
             _serializer = serializer;
             _instance = instance;
         }
 
-        public async Task<Response> Invoke(string serializedRequest)
+        public async Task<Response> Invoke(byte[] serializedRequest)
         {
             var deserializedRequest = _serializer.RequestSerializer.DeserializeRequest<TContract>(serializedRequest);
             var response = await ContractParser<TContract>.Invoke(_instance, _serializer.ResponseSerializer, deserializedRequest.Method, deserializedRequest.Args.Values.ToArray());

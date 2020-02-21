@@ -136,21 +136,26 @@ namespace CupcakeFactory.ServiceProxy
 
             try
             {
-                if (method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                if (method.ReturnType == typeof(Task))
                 {
-                    var task = (Task)method.Invoke(serviceInstance, args);
-                    await task
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                    Task task;
 
-                    var resultProperty = task.GetType().GetProperty("Result");
-                    result.ResponseObject = resultProperty.GetValue(task);
-                }
-                else if (method.ReturnType == typeof(Task))
-                {
-                    var task = (Task)method.Invoke(serviceInstance, args);
+                    if (method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                    {
+                        task = (Task)method.Invoke(serviceInstance, args);
+                        await task
+                            .ConfigureAwait(continueOnCapturedContext: false);
 
-                    await task
-                        .ConfigureAwait(continueOnCapturedContext: false);
+                        var resultProperty = task.GetType().GetProperty("Result");
+                        result.ResponseObject = resultProperty.GetValue(task);
+                    }
+                    else
+                    {
+                        task = (Task)method.Invoke(serviceInstance, args);
+
+                        await task
+                            .ConfigureAwait(continueOnCapturedContext: false);
+                    }
                 }
                 else if (method.ReturnType.Name == "Void")
                 {

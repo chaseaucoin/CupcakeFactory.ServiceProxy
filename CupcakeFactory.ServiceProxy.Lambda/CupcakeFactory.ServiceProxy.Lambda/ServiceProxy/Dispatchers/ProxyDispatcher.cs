@@ -10,16 +10,15 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 {
     public abstract class ProxyDispatcher<TContract> : IDispatch
     {
-        protected ISerializer _serializer;
+        protected IProxySerializer _serializer;
         MethodInfo _dispatchMethod = typeof(ProxyDispatcher<TContract>).GetMethod(nameof(InvokeAsyncGeneric));
-        PropertyInfo _resultProperty = typeof(Task).GetProperty("Result");
-
-        public ProxyDispatcher(ISerializer serializer)
+        
+        public ProxyDispatcher(IProxySerializer serializer)
         {
             _serializer = serializer;
         }
 
-        protected string SerializeRequest(MethodInfo method, object[] args)
+        protected byte[] SerializeRequest(MethodInfo method, object[] args)
         {
             var result = _serializer.RequestSerializer.SerializeRequest<TContract>(method, args);
             return result;
@@ -27,12 +26,15 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 
         public object Invoke(MethodInfo method, object[] args)
         {
-            var task = (Task)_dispatchMethod.Invoke(this, new object[] { method, args });
+            var genericDispathMethod = _dispatchMethod.MakeGenericMethod(method.ReturnType);
+
+            var task = (Task)genericDispathMethod.Invoke(this, new object[] { method, args });
             object result = null;
 
             task
                 .ContinueWith(x => {
-                    result = _resultProperty.GetValue(x);
+                    var resultProperty = x.GetType().GetProperty("Result");
+                    result = resultProperty.GetValue(x);
                 })
                 .Wait();
 
@@ -45,6 +47,6 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
             await task;
         }
 
-        public abstract Task<T1> InvokeAsyncGeneric<T1>(MethodInfo method, object[] args);
+        public abstract Task<TReturnType> InvokeAsyncGeneric<TReturnType>(MethodInfo method, object[] args);
     }
 }

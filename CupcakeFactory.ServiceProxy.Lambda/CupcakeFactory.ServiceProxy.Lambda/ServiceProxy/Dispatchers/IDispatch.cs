@@ -14,6 +14,6 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 
         Task InvokeAsync(MethodInfo method, object[] args);
 
-        Task<T1> InvokeAsyncGeneric<T1>(MethodInfo method, object[] args);
+        Task<TReturnType> InvokeAsyncGeneric<TReturnType>(MethodInfo method, object[] args);
     }
 }

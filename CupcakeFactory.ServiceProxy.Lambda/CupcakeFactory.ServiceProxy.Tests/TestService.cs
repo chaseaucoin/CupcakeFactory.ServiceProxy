@@ -9,6 +9,8 @@ namespace CupcakeFactory.ServiceProxy.Tests
     {
         void DoWorkWithVoidAndNoParameters();
 
+        SimpleObject DoWorkSync(long someLong);
+
         void DoWorkWithVoidAndMultipleBuiltInParameters(long someLong, string someString);
 
         Task DoWorkWithTaskAndMultipleBuiltInParameters(long someLong, string someString);
@@ -62,6 +64,20 @@ namespace CupcakeFactory.ServiceProxy.Tests
         public void ThisVoidAlwaysFails()
         {
             throw new Exception("I Failed");
+        }
+
+        public SimpleObject DoWorkSync(long someLong)
+        {
+            return new SimpleObject()
+            {
+                Long = someLong,
+                Bool = true,
+                Char = 's',
+                Decimal = 123,
+                Double = 123.0,
+                Int = 321,
+                String = "w00t"
+            };
         }
     }
 

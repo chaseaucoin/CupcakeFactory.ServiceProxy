@@ -14,7 +14,7 @@ namespace CupcakeFactory.ServiceProxy.Tests
     [TestClass]
     public class ParserTests
     {
-        IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonSerializer<ITestService>(), new TestService());
+        IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer<ITestService>(), new TestService());
 
 
         [TestMethod]
@@ -26,11 +26,11 @@ namespace CupcakeFactory.ServiceProxy.Tests
         }
 
         [TestMethod]
-        public async Task CanParseArguments2()
+        public void CanInvokeSyncReturn()
         {
             var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
 
-            var result = await proxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
+            var result = proxy.DoWorkSync(596);
         }
 
         [TestMethod]
