@@ -11,6 +11,8 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
     public abstract class ProxyDispatcher<TContract> : IDispatch
     {
         protected ISerializer _serializer;
+        MethodInfo _dispatchMethod = typeof(ProxyDispatcher<TContract>).GetMethod(nameof(InvokeAsyncGeneric));
+        PropertyInfo _resultProperty = typeof(Task).GetProperty("Result");
 
         public ProxyDispatcher(ISerializer serializer)
         {
@@ -23,10 +25,26 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
             return result;
         }
 
-        public abstract object Invoke(MethodInfo method, object[] args);
+        public object Invoke(MethodInfo method, object[] args)
+        {
+            var task = (Task)_dispatchMethod.Invoke(this, new object[] { method, args });
+            object result = null;
 
-        public abstract Task InvokeAsync(MethodInfo method, object[] args);
+            task
+                .ContinueWith(x => {
+                    result = _resultProperty.GetValue(x);
+                })
+                .Wait();
 
-        public abstract Task<T1> InvokeAsync<T1>(MethodInfo method, object[] args);
+            return result;
+        }
+
+        public async Task InvokeAsync(MethodInfo method, object[] args)
+        {
+            var task = (Task)_dispatchMethod.Invoke(this, new object[] { method, args });
+            await task;
+        }
+
+        public abstract Task<T1> InvokeAsyncGeneric<T1>(MethodInfo method, object[] args);
     }
 }

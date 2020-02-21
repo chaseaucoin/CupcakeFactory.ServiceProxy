@@ -35,7 +35,7 @@ namespace CupcakeFactory.ServiceProxy
 
         public override async Task<T1> InvokeAsyncT<T1>(MethodInfo method, object[] args)
         {
-            var result = await _dispatcher.InvokeAsync<T1>(method, args);
+            var result = await _dispatcher.InvokeAsyncGeneric<T1>(method, args);
             return result;
         }
     }
