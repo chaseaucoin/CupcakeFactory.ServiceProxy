@@ -1,13 +1,19 @@
-﻿using CupcakeFactory.ServiceProxy.Serializers;
+﻿using CupcakeFactory.ServiceProxy.Models;
+using CupcakeFactory.ServiceProxy.Serializers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CupcakeFactory.ServiceProxy.Dispatchers
 {
-    interface IDispatch
+    public interface IDispatch
     {
-        //Task<ISerializedContent>
+        object Invoke(MethodInfo method, object[] args);
+
+        Task InvokeAsync(MethodInfo method, object[] args);
+
+        Task<T1> InvokeAsync<T1>(MethodInfo method, object[] args);
     }
 }

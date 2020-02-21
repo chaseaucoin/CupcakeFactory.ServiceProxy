@@ -1,3 +1,4 @@
+using CupcakeFactory.ServiceProxy.Dispatchers;
 using CupcakeFactory.ServiceProxy.Serializers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -13,10 +14,13 @@ namespace CupcakeFactory.ServiceProxy.Tests
     [TestClass]
     public class ParserTests
     {
+        IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonSerializer<ITestService>(), new TestService());
+
+
         [TestMethod]
         public async Task CanParseArguments()
         {
-            var proxy = ServiceProxy<ITestService>.GetProxy(new TestService(), new JsonSerializer<ITestService>());
+            var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
             
             var result = await proxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
         }
@@ -24,7 +28,7 @@ namespace CupcakeFactory.ServiceProxy.Tests
         [TestMethod]
         public async Task CanParseArguments2()
         {
-            var proxy = ServiceProxy<ITestService>.GetProxy(new TestService(), new JsonSerializer<ITestService>());
+            var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
 
             var result = await proxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
         }
@@ -32,7 +36,7 @@ namespace CupcakeFactory.ServiceProxy.Tests
         [TestMethod]
         public async Task CanThrowExceptionWithGenericTask()
         {
-            var proxy = ServiceProxy<ITestService>.GetProxy(new TestService(), new JsonSerializer<ITestService>());
+            var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
 
             try
             {
