@@ -22,11 +22,11 @@ namespace CupcakeFactory.ServiceProxy
 
         static ContractParser()
         {
-            _serviceType = typeof(TService);            
+            _serviceType = typeof(TService);
             var methods = _serviceType.GetMethods();
 
             //Get a temp dictionary to hold full-length hashes
-            var tempDictonary = new Dictionary<string, MethodInfo>();            
+            var tempDictonary = new Dictionary<string, MethodInfo>();
 
             foreach (var method in methods)
             {
@@ -35,7 +35,7 @@ namespace CupcakeFactory.ServiceProxy
             }
 
             //create smallest non-colliding hashes
-            foreach(var method in tempDictonary)
+            foreach (var method in tempDictonary)
             {
                 List<char> charList = new List<char>();
                 for (int i = 0; i < method.Key.Length; i++)
@@ -43,7 +43,7 @@ namespace CupcakeFactory.ServiceProxy
                     charList.Add(method.Key[i]);
 
                     var key = new string(charList.ToArray());
-                    if(tempDictonary.Count(x => x.Key.StartsWith(key)) == 1)
+                    if (tempDictonary.Count(x => x.Key.StartsWith(key)) == 1)
                     {
                         _methods.Add(key, method.Value);
                         _methodsReverse.Add(method.Value, key);
@@ -85,9 +85,9 @@ namespace CupcakeFactory.ServiceProxy
 
         public static object DeserializeResponse(MethodInfo methodInfo, string serializedObject)
         {
-            JObject obj = JObject.Parse(serializedObject);            
+            JObject obj = JObject.Parse(serializedObject);
 
-            if(obj["s"].Value<bool>())
+            if (obj["s"].Value<bool>())
             {
                 var responseJson = obj["r"].ToString();
                 return JsonConvert.DeserializeObject(responseJson, methodInfo.ReturnType);
@@ -117,19 +117,19 @@ namespace CupcakeFactory.ServiceProxy
             var properties = message.Properties();
             var key = message.Properties().FirstOrDefault().Name;
 
-            var method =  GetMethod(key);
+            var method = GetMethod(key);
 
             object[] args = message.Value<JObject>(key)
                 .Properties()
                 .OrderBy(x => int.Parse(x.Name))
-                .Select(x => x.Value.ToObject(GetPropertyType(key,x.Name)))
+                .Select(x => x.Value.ToObject(GetPropertyType(key, x.Name)))
                 .ToArray();
 
             return new Request(method, args);
         }
 
-        public static async Task<Response> Invoke(TService serviceInstance, 
-            IResponseSerializer responseSerializer, 
+        public static async Task<Response> Invoke(TService serviceInstance,
+            IResponseSerializer responseSerializer,
             MethodInfo method,
             object[] args)
         {
@@ -137,26 +137,25 @@ namespace CupcakeFactory.ServiceProxy
 
             try
             {
-                if (method.ReturnType == typeof(Task))
+                if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
                 {
-                    Task task;
+                    Task task = null;
 
-                    if (method.ReturnType == typeof(Task<>))
-                    {
-                        task = (Task)method.Invoke(serviceInstance, args);
-                        await task
-                            .ConfigureAwait(continueOnCapturedContext: false);
+                    task = (Task)method.Invoke(serviceInstance, args);
+                    await task
+                        .ConfigureAwait(continueOnCapturedContext: false);
 
-                        var resultProperty = task.GetType().GetProperty("Result");
-                        result.ResponseObject = resultProperty.GetValue(task);
-                    }
-                    else
-                    {
-                        task = (Task)method.Invoke(serviceInstance, args);
+                    var resultProperty = task.GetType().GetProperty("Result");
+                    result.ResponseObject = resultProperty.GetValue(task);
+                }
+                else if (method.ReturnType == typeof(Task))
+                {
+                    Task task = null;
 
-                        await task
-                            .ConfigureAwait(continueOnCapturedContext: false);
-                    }
+                    task = (Task)method.Invoke(serviceInstance, args);
+
+                    await task
+                        .ConfigureAwait(continueOnCapturedContext: false);
                 }
                 else if (method.ReturnType.Name == "Void")
                 {
@@ -167,7 +166,7 @@ namespace CupcakeFactory.ServiceProxy
                     result.ResponseObject = method.Invoke(serviceInstance, args);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.Success = false;
                 result.ResponseObject = new ExceptionWrapper(ex);
