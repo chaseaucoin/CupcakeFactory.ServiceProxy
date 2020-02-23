@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CupcakeFactory.ServiceProxy\CupcakeFactory.ServiceProxy.csproj" />
+    <ProjectReference Include="..\..\CupcakeFactory.ServiceProxy\CupcakeFactory.ServiceProxy.csproj" />
   </ItemGroup>
 
 </Project>
