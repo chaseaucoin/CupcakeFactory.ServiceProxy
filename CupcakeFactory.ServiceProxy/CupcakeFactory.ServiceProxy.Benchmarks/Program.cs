@@ -13,12 +13,19 @@ namespace MyBenchmarks
     [RPlotExporter]
     public class ProxyBaselines
     {
-        ITestService jsonDotNetProxy;
+        ITestService jsonDotNetProxy;        
 
         public ProxyBaselines()
         {
             IDispatch jsonDotNetDispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer<ITestService>(), new TestService());
             jsonDotNetProxy = ServiceProxy<ITestService>.GetProxy(jsonDotNetDispatcher);
+        }
+
+        [Benchmark]
+        public async Task<SimpleObject> DirectInstantiation()
+        {
+            var service = new TestService();
+            return await service.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
         }
 
         [Benchmark]

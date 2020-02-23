@@ -1,6 +1,6 @@
 using CupcakeFactory.ServiceProxy.Dispatchers;
 using CupcakeFactory.ServiceProxy.Serializers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace CupcakeFactory.ServiceProxy.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ParserTests
     {
         IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer<ITestService>(), new TestService());
 
 
-        [TestMethod]
+        [TestCase]
         public async Task CanParseArguments()
         {
             var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
@@ -25,7 +25,7 @@ namespace CupcakeFactory.ServiceProxy.Tests
             var result = await proxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
         }
 
-        [TestMethod]
+        [TestCase]
         public void CanInvokeSyncReturn()
         {
             var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
@@ -33,7 +33,7 @@ namespace CupcakeFactory.ServiceProxy.Tests
             var result = proxy.DoWorkSync(596);
         }
 
-        [TestMethod]
+        [TestCase]
         public async Task CanThrowExceptionWithGenericTask()
         {
             var proxy = ServiceProxy<ITestService>.GetProxy(_dispatcher);
