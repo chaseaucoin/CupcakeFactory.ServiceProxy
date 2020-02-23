@@ -26,15 +26,25 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 
         public object Invoke(MethodInfo method, object[] args)
         {
-            var genericDispathMethod = _dispatchMethod.MakeGenericMethod(method.ReturnType);
+            Task task = null;
 
-            var task = (Task)genericDispathMethod.Invoke(this, new object[] { method, args });
+            if (method.ReturnType.FullName == "System.Void")
+                task = InvokeAsync(method, args);
+
+            else
+            {
+                var genericDispathMethod = _dispatchMethod.MakeGenericMethod(method.ReturnType);
+                task = (Task)genericDispathMethod.Invoke(this, new object[] { method, args });
+            }
+
             object result = null;
 
             task
                 .ContinueWith(x => {
                     var resultProperty = x.GetType().GetProperty("Result");
-                    result = resultProperty.GetValue(x);
+                    
+                    if(task.GetType() == typeof(Task<>))
+                        result = resultProperty.GetValue(x);
                 })
                 .Wait();
 
