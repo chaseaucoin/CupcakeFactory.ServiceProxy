@@ -15,6 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{16C73A1B-A
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AWS", "AWS", "{7B6274AF-8EB7-4FD8-A90E-0FDAE48A03D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeFactory.ServiceProxy.Lambda", "CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.ServiceProxy.Lambda.csproj", "{E4CEA449-135F-46DC-B812-7056E0FAB8CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AWS", "AWS", "{1D679C17-8047-4EFE-8100-EC88B637AD97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +39,17 @@ Global
 		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C156F03-8907-4A7D-8A87-B49251534AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CEA449-135F-46DC-B812-7056E0FAB8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CEA449-135F-46DC-B812-7056E0FAB8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CEA449-135F-46DC-B812-7056E0FAB8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CEA449-135F-46DC-B812-7056E0FAB8CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E4CEA449-135F-46DC-B812-7056E0FAB8CF} = {7B6274AF-8EB7-4FD8-A90E-0FDAE48A03D0}
+		{1D679C17-8047-4EFE-8100-EC88B637AD97} = {16C73A1B-A278-4D2E-BE89-391EBB471425}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCD27186-1663-4CA0-96A7-100D04E1DE58}

@@ -1,4 +1,5 @@
 ﻿using CupcakeFactory.Extensions;
+using CupcakeFactory.Extensions.Hash;
 using CupcakeFactory.ServiceProxy.Models;
 using CupcakeFactory.ServiceProxy.Serializers;
 using Newtonsoft.Json;
@@ -73,7 +74,7 @@ namespace CupcakeFactory.ServiceProxy
                 sb.Append($"|{paramName}|{typeName}");
             }
 
-            return sb.ToString().ToSHA256Hash();
+            return sb.ToString().ToSHA256HashString();
         }
 
         public static string GetMethodKey(MethodInfo method) => _methodsReverse[method];
@@ -140,7 +141,7 @@ namespace CupcakeFactory.ServiceProxy
                 {
                     Task task;
 
-                    if (method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                    if (method.ReturnType == typeof(Task<>))
                     {
                         task = (Task)method.Invoke(serviceInstance, args);
                         await task

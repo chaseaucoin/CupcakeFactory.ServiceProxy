@@ -1,36 +1,31 @@
-using CupcakeFactory.ServiceProxy.Dispatchers;
-using CupcakeFactory.ServiceProxy.Serializers;
+﻿using CupcakeFactory.ServiceProxy.Dispatchers;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace CupcakeFactory.ServiceProxy.Tests
+namespace CupcakeFactory.ServiceProxy.Tests.AWS
 {
     [TestFixture]
-    public class InProcTests
+    public class LambdaLocalTests
     {
         public static IEnumerable<TestCaseData> HappyPathCaseData()
         {
-            IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer(), new TestService());
+            IDispatch _dispatcher = new LambdaTestDispatcher<ITestService>(new TestService());
             return new TestBuilder(_dispatcher).HappyPathCaseData();
         }
 
         public static IEnumerable<TestCaseData> FailedCaseData()
         {
-            IDispatch _dispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer(), new TestService());
+            IDispatch _dispatcher = new LambdaTestDispatcher<ITestService>(new TestService());
             return new TestBuilder(_dispatcher).FailedCaseData();
         }
 
         [TestCaseSource("HappyPathCaseData")]
-        public void TestHapyyPath(Func<Task> task)
+        public async Task TestHapyyPath(Func<Task> task)
         {
-            task();
+            await task();            
         }
 
         [TestCaseSource("FailedCaseData")]

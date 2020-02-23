@@ -38,9 +38,13 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
             }
 
             object result = null;
+            Exception e = null;
 
             task
                 .ContinueWith(x => {
+                    if (x.Status == TaskStatus.Faulted)
+                        e = x.Exception.InnerException;
+
                     var resultProperty = x.GetType().GetProperty("Result");
                     
                     if(task.GetType() == typeof(Task<>))
@@ -48,12 +52,20 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
                 })
                 .Wait();
 
+            if (e != null)
+                throw e.InnerException;
+
             return result;
         }
 
         public async Task InvokeAsync(MethodInfo method, object[] args)
         {
-            var task = (Task)_dispatchMethod.Invoke(this, new object[] { method, args });
+            var dispatchMethod = _dispatchMethod.MakeGenericMethod(typeof(object));
+            var task = (Task)dispatchMethod.Invoke(this, new object[] { method, args });
+
+            if (task.Status == TaskStatus.Faulted)
+                throw task.Exception;
+
             await task;
         }
 

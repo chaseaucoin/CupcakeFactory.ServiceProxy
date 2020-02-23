@@ -95,7 +95,7 @@ namespace CupcakeFactory.ServiceProxy.Serializers
         }
     }
 
-    public class JsonProxySerializer<TContract> : IProxySerializer
+    public class JsonProxySerializer : IProxySerializer
     {
         IRequestSerializer _requestSerializer = new JsonRequestSerializer();
 

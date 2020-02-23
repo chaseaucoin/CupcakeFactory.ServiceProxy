@@ -24,13 +24,27 @@ namespace CupcakeFactory.ServiceProxy
 
         public override object Invoke(MethodInfo method, object[] args)
         {
-            var result = _dispatcher.Invoke(method, args);
-            return result;
+            try
+            {
+                var result = _dispatcher.Invoke(method, args);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         public override async Task InvokeAsync(MethodInfo method, object[] args)
         {
-            await _dispatcher.InvokeAsync(method, args);
+            try
+            {
+                await _dispatcher.InvokeAsync(method, args);
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         public override async Task<T1> InvokeAsyncT<T1>(MethodInfo method, object[] args)

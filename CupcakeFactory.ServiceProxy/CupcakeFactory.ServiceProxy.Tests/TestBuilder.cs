@@ -2,12 +2,13 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CupcakeFactory.ServiceProxy.Tests
 {
     public class TestBuilder
     {
-        List<Action> _tests;
+        List<Func<Task>> _tests;
         ITestService _service;
         IDispatch _dispatcher;
 
@@ -18,20 +19,20 @@ namespace CupcakeFactory.ServiceProxy.Tests
             _service = ServiceProxy<ITestService>.GetProxy(dispatcher);
         }
 
-        private IEnumerable<KeyValuePair<string, Action>> PositiveTests()
+        private IEnumerable<KeyValuePair<string, Func<Task>>> PositiveTests()
         {
-            yield return KeyValuePair.Create<string, Action>("DoWorkSync", () => _service.DoWorkSync(1));
-            yield return KeyValuePair.Create<string, Action>("DoWorkWithTaskAndMultipleBuiltInParameters", () => _service.DoWorkWithTaskAndMultipleBuiltInParameters(2, "TestString"));
-            yield return KeyValuePair.Create<string, Action>("DoWorkWithTaskAndMultipleUserTypeParameters", () => _service.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
-            yield return KeyValuePair.Create<string, Action>("DoWorkWithVoidAndMultipleBuiltInParameters", () => _service.DoWorkWithVoidAndMultipleBuiltInParameters(2, "TestString"));
-            yield return KeyValuePair.Create<string, Action>("DoWorkWithVoidAndNoParameters", () => _service.DoWorkWithVoidAndNoParameters());
+            yield return KeyValuePair.Create<string, Func<Task>>("DoWorkSync", () => Task.FromResult(_service.DoWorkSync(1)));
+            yield return KeyValuePair.Create<string, Func<Task>>("DoWorkWithTaskAndMultipleBuiltInParameters", async () => await _service.DoWorkWithTaskAndMultipleBuiltInParameters(2, "TestString"));
+            yield return KeyValuePair.Create<string, Func<Task>>("DoWorkWithTaskAndMultipleUserTypeParameters", async () => await _service.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
+            yield return KeyValuePair.Create<string, Func<Task>>("DoWorkWithVoidAndMultipleBuiltInParameters", () => Task.Run(() => _service.DoWorkWithVoidAndMultipleBuiltInParameters(2, "TestString")));
+            yield return KeyValuePair.Create<string, Func<Task>>("DoWorkWithVoidAndNoParameters", () => Task.Run(() => _service.DoWorkWithVoidAndNoParameters()));
         }
 
-        private IEnumerable<KeyValuePair<string, Action>> NegativeTests()
+        private IEnumerable<KeyValuePair<string, Func<Task>>> NegativeTests()
         {
-            yield return KeyValuePair.Create<string, Action>("ThisGenericTaskAlwaysFails", () => _service.ThisGenericTaskAlwaysFails(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
-            yield return KeyValuePair.Create<string, Action>("ThisTaskAlwaysFails", () => _service.ThisTaskAlwaysFails(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
-            yield return KeyValuePair.Create<string, Action>("ThisVoidAlwaysFails", () => _service.ThisVoidAlwaysFails());
+            yield return KeyValuePair.Create<string, Func<Task>>("ThisGenericTaskAlwaysFails", async () => await _service.ThisGenericTaskAlwaysFails(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
+            yield return KeyValuePair.Create<string, Func<Task>>("ThisTaskAlwaysFails", async () => await _service.ThisTaskAlwaysFails(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject()));
+            yield return KeyValuePair.Create<string, Func<Task>>("ThisVoidAlwaysFails", () => Task.Run(() => _service.ThisVoidAlwaysFails()));
         }
 
         public IEnumerable<TestCaseData> HappyPathCaseData()

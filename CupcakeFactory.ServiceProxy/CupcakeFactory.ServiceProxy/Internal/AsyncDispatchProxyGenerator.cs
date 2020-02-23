@@ -19,14 +19,14 @@ namespace System.Reflection
             return AsyncDispatchProxyGenerator.Invoke(args);
         }
 
-        public Task InvokeAsyncHandle(object[] args)
+        public async Task InvokeAsyncHandle(object[] args)
         {
-            return AsyncDispatchProxyGenerator.InvokeAsync(args);
+            await AsyncDispatchProxyGenerator.InvokeAsync(args);
         }
 
-        public Task<T> InvokeAsyncHandleT<T>(object[] args)
+        public async Task<T> InvokeAsyncHandleT<T>(object[] args)
         {
-            return AsyncDispatchProxyGenerator.InvokeAsync<T>(args);
+            return await AsyncDispatchProxyGenerator.InvokeAsync<T>(args);
         }
     }
 

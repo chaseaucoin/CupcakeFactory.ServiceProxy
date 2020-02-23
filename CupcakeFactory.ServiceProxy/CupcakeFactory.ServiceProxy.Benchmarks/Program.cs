@@ -17,7 +17,7 @@ namespace MyBenchmarks
 
         public ProxyBaselines()
         {
-            IDispatch jsonDotNetDispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer<ITestService>(), new TestService());
+            IDispatch jsonDotNetDispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer(), new TestService());
             jsonDotNetProxy = ServiceProxy<ITestService>.GetProxy(jsonDotNetDispatcher);
         }
 
@@ -34,7 +34,7 @@ namespace MyBenchmarks
         [Benchmark]
         public async Task<SimpleObject> JsonDotNetCold()
         {
-            IDispatch coldJsonDotNetDispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer<ITestService>(), new TestService());
+            IDispatch coldJsonDotNetDispatcher = new InProcDispatcher<ITestService>(new JsonProxySerializer(), new TestService());
             var coldProxy = ServiceProxy<ITestService>.GetProxy(coldJsonDotNetDispatcher);
 
             return await coldProxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());

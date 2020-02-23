@@ -24,32 +24,15 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 
         public override async Task<TReturnType> InvokeAsyncGeneric<TReturnType>(MethodInfo method, object[] args)
         {
-            var sw = Stopwatch.StartNew();
-
             var serializedRequest = SerializeRequest(method, args);
-
-            var serializedRequestTime = sw.ElapsedMilliseconds;
-
-            sw = Stopwatch.StartNew();
 
             //Would normally happen on another server            
             var response = await _invoker.Invoke(serializedRequest);
 
-            var invokeTime = sw.ElapsedMilliseconds;
-
-            sw = Stopwatch.StartNew();
-
             var serializedResponse = _serializer.ResponseSerializer.SerializeResponse(response);
-
-            var serializeRepsonseTime = sw.ElapsedMilliseconds;
-
-            sw = Stopwatch.StartNew();
+                        
             //This would happen at the client
             var deserializedObject = _serializer.ResponseSerializer.DeserializeResponse<TReturnType>(method, serializedResponse);
-
-            var deserializeRsponseTime = sw.ElapsedMilliseconds;
-
-            sw.Stop();
 
             return deserializedObject;
         }
