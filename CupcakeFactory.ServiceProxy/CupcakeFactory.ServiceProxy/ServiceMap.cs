@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CupcakeFactory.ServiceProxy.Lambda
+namespace CupcakeFactory.ServiceProxy
 {
     public class ServiceMap
     {
