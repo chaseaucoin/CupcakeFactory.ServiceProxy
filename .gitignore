@@ -349,4 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-**/lambda-tools-defaults.json
+/CupcakeFactory.ServiceProxy/AWS/Examples/ExampleLambdaService/aws-lambda-tools-defaults.json
