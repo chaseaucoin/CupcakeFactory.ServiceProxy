@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CupcakeFactory.ServiceProxy": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "AWS_PROFILE": "CupcakeFactory"
+      }
+    }
+  }
+}

@@ -47,7 +47,7 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
 
                     var resultProperty = x.GetType().GetProperty("Result");
                     
-                    if(task.GetType() == typeof(Task<>))
+                    if (resultProperty != null)                        
                         result = resultProperty.GetValue(x);
                 })
                 .Wait();

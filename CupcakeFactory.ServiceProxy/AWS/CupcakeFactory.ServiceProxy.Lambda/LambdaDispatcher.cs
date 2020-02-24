@@ -62,8 +62,15 @@ namespace CupcakeFactory.ServiceProxy.Lambda
             //Send request to lambda function
             var content = new StringContent(lambdaRequestJosn, Encoding.UTF8, "binary/octet-stream");
             var response = await _lambdaClient.PostAsync(requestUri, content, _region, "lambda", _credentials);
-            var base64response = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"There was an error trying to invoke the function. Make sure credentials, roles, region, and the function name are all set correctly. \n{responseString}");
+            }
+
             
+            var base64response = responseString.Trim('"');
+
             //Get the serialized byte array
             var responseBytes = Convert.FromBase64String(base64response);
 

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ExampleLambdaClient": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "AWS_PROFILE ": "CupcakeFactory"
+      }
+    }
+  }
+}

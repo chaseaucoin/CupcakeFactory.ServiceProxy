@@ -1,4 +1,4 @@
-﻿namespace ExampleLambdaService.Services
+﻿namespace ExampleContracts
 {
     public interface ISubtractionService
     {

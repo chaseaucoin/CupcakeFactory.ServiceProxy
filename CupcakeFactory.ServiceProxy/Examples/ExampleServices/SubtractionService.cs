@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ExampleContracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExampleLambdaService.Services
+namespace ExampleServices
 {
     public class SubtractionService : ISubtractionService
     {

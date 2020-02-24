@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 using Amazon.Lambda.Core;
 using CupcakeFactory.ServiceProxy.Lambda;
-using ExampleLambdaService.Services;
+using ExampleContracts;
+using ExampleServices;
 using Microsoft.Extensions.DependencyInjection;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.

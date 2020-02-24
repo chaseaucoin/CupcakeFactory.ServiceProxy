@@ -9,6 +9,7 @@
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Examples\ExampleServices\ExampleServices.csproj" />
     <ProjectReference Include="..\..\CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.ServiceProxy.Lambda.csproj" />
   </ItemGroup>
 </Project>
