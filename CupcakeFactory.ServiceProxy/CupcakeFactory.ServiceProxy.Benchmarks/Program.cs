@@ -21,12 +21,12 @@ namespace MyBenchmarks
             jsonDotNetProxy = ServiceProxy<ITestService>.GetProxy(jsonDotNetDispatcher);
         }
 
-        [Benchmark]
-        public async Task<SimpleObject> DirectInstantiation()
-        {
-            var service = new TestService();
-            return await service.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
-        }
+        //[Benchmark]
+        //public async Task<SimpleObject> DirectInstantiation()
+        //{
+        //    var service = new TestService();
+        //    return await service.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());
+        //}
 
         [Benchmark]
         public async Task<SimpleObject> JsonDotNetWarmed() => await jsonDotNetProxy.DoWorkWithTaskAndMultipleUserTypeParameters(new SimpleObject() { Int = 321, Long = 123 }, new ComplexObject(), new SelfReferenceingObject());

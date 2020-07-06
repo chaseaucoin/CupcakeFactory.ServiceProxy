@@ -44,16 +44,21 @@ namespace CupcakeFactory.ServiceProxy.Dispatchers
                 .ContinueWith(x => {
                     if (x.Status == TaskStatus.Faulted)
                         e = x.Exception.InnerException;
+                    else
+                    {
+                        var resultProperty = x.GetType().GetProperty("Result");
 
-                    var resultProperty = x.GetType().GetProperty("Result");
-                    
-                    if (resultProperty != null)                        
-                        result = resultProperty.GetValue(x);
+                        if (resultProperty != null)
+                            result = resultProperty.GetValue(x);
+                    }
                 })
                 .Wait();
 
             if (e != null)
-                throw e.InnerException;
+                if(e is AggregateException)
+                    throw e.InnerException;
+                else
+                    throw e;
 
             return result;
         }

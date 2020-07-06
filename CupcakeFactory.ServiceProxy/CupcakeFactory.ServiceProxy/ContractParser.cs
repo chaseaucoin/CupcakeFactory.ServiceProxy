@@ -166,6 +166,11 @@ namespace CupcakeFactory.ServiceProxy
                     result.ResponseObject = method.Invoke(serviceInstance, args);
                 }
             }
+            catch (System.Reflection.TargetInvocationException ex)
+            {
+                result.Success = false;
+                result.ResponseObject = new ExceptionWrapper(ex.InnerException);
+            }
             catch (Exception ex)
             {
                 result.Success = false;

@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.11.1" />
@@ -20,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AWS\CupcakeFactory.ServiceProxy.Lambda\CupcakeFactory.ServiceProxy.Lambda.csproj" />
+    <ProjectReference Include="..\CupcakeFactory.ServiceProxy.HTTP\CupcakeFactory.ServiceProxy.HTTP.csproj" />
     <ProjectReference Include="..\CupcakeFactory.ServiceProxy\CupcakeFactory.ServiceProxy.csproj" />
   </ItemGroup>
 

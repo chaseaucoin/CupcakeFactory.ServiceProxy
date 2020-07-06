@@ -45,7 +45,7 @@ namespace ExampleLambdaClient
             var result = service.Add(1, 3);
 
             //Uncomment to benchmark your results
-            BenchmarkRunner.Run<LambdaBenchmarks>();
+            //BenchmarkRunner.Run<LambdaBenchmarks>();
         }
     }
 }

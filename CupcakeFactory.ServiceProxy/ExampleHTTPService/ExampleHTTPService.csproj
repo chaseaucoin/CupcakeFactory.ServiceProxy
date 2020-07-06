@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CupcakeFactory.ServiceProxy.HTTP\CupcakeFactory.ServiceProxy.HTTP.csproj" />
+    <ProjectReference Include="..\Examples\ExampleContracts\ExampleContracts.csproj" />
+    <ProjectReference Include="..\Examples\ExampleServices\ExampleServices.csproj" />
+  </ItemGroup>
+
+</Project>

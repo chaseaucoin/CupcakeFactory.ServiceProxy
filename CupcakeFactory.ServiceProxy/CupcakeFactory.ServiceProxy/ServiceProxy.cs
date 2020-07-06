@@ -31,7 +31,7 @@ namespace CupcakeFactory.ServiceProxy
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                throw ex;
             }
         }
 
@@ -41,9 +41,13 @@ namespace CupcakeFactory.ServiceProxy
             {
                 await _dispatcher.InvokeAsync(method, args);
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
                 throw ex.InnerException;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
