@@ -10,7 +10,8 @@ namespace ExampleHTTPClient
         static void Main(string[] args)
         {
             var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("http://localhost:5024");
+            httpClient.BaseAddress = new Uri("http://localhost:5024");            
+
             ISubtractionService subtractionService = httpClient.GetProxy<ISubtractionService>();
             IAdditionService additionService = httpClient.GetProxy<IAdditionService>();
 

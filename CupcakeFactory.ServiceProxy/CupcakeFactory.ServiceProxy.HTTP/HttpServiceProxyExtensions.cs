@@ -26,7 +26,7 @@ namespace CupcakeFactory.ServiceProxy
                 {
                     var serviceProxyHeader = context.Request.Headers["X-ServiceProxy"];
 
-                    if (!string.IsNullOrEmpty(serviceProxyHeader) || serviceProxyHeader[0] != typeof(TContract).FullName)
+                    if (!string.IsNullOrEmpty(serviceProxyHeader) && serviceProxyHeader[0] == typeof(TContract).FullName)
                     {
                         var service = builder.ApplicationServices.GetService<TContract>();
                         var serializer = new JsonProxySerializer();
